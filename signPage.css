@@ -1,0 +1,96 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.signPage {
+    border-radius: 30px;
+    box-shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
+    /* Skyeng b2b / White */
+    background: rgb(255, 255, 255);
+    padding: 32px 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 379px;
+    margin: auto;
+}
+
+.signPage-title {
+    color: rgb(0, 0, 0);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    letter-spacing: 0px;
+    text-align: center;
+    margin: 0;
+}
+
+.signPage-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.signPage-input {
+    box-sizing: border-box;
+    border: 0.5px solid rgb(153, 153, 153);
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.signPage-input::placeholder {
+    color: rgb(153, 153, 153);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0px;
+    text-align: left;
+}
+
+.signPage-button {
+    color: rgb(255, 255, 255);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0px;
+    text-align: center;
+    border-radius: 6px;
+    background: rgb(115, 52, 234);
+    padding: 12px;
+    border: none;
+    
+}
+
+.signPage-box-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.signPage-text {
+    margin: 0;
+    color: rgb(153, 153, 153);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: 0px;
+    text-align: center;
+}
+
+.signPage-link {
+    margin: 0;
+    color: rgb(153, 153, 153);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: 0px;
+    text-align: center;
+}
