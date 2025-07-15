@@ -2,6 +2,11 @@ import { useState } from "react";
 import "./style.css";
 
 function App() {
+  const handleNavigation = (e) => {
+    e.preventDefault(); // Отменяем стандартное поведение
+    window.location.href = "/analysis.html"; // Или другая логика
+  };
+
   return (
     <>
       <header className="header">
@@ -12,7 +17,8 @@ function App() {
           </a>
           <a
             className="header-box-link"
-            href="analysis.html"
+            href="/analysis.html"
+            onClick={handleNavigation}
             aria-current="page"
           >
             Анализ расходов
