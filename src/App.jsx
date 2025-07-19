@@ -3,8 +3,8 @@ import "./style.css";
 
 function App() {
   const handleNavigation = (e) => {
-    e.preventDefault(); // Отменяем стандартное поведение
-    window.location.href = "/analysis.html"; // Или другая логика
+    e.preventDefault();
+    window.location.href = "/analysis.html";
   };
 
   return (
