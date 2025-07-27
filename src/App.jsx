@@ -1,30 +1,77 @@
 import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  Navigate
+} from "react-router-dom";
 import "./style.css";
+import Analysis from "./components/Analysis";
 
-function App() {
+// Компонент страницы расходов
+function ExpensesPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      description: "Пятерочка",
-      category: "Еда",
-      date: "03.07.2024",
-      amount: "3 500 ₽",
-    },
-  ]);
+  const [expenses, setExpenses] = useState(() => {
+    // Загрузка данных из localStorage при инициализации
+    try {
+      const savedExpenses = localStorage.getItem("expenses");
+      return savedExpenses
+        ? JSON.parse(savedExpenses)
+        : [
+            {
+              id: 1,
+              description: "Пятерочка",
+              category: "Еда",
+              date: "03.07.2024",
+              amount: "3 500 ₽",
+            },
+          ];
+    } catch (error) {
+      console.error("Ошибка при чтении из localStorage:", error);
+      return [
+        {
+          id: 1,
+          description: "Пятерочка",
+          category: "Еда",
+          date: "03.07.2024",
+          amount: "3 500 ₽",
+        },
+      ];
+    }
+  });
+
   const [newExpense, setNewExpense] = useState({
     description: "",
     category: "",
     date: "",
     amount: "",
   });
-  const [formValid, setFormValid] = useState(false);
-  const [nextId, setNextId] = useState(2);
 
-  const handleNavigation = (e) => {
-    e.preventDefault();
-    window.location.href = "/analysis.html";
-  };
+  const [formValid, setFormValid] = useState(false);
+  const [nextId, setNextId] = useState(() => {
+    // Загрузка следующего ID из localStorage
+    try {
+      const savedNextId = localStorage.getItem("nextId");
+      return savedNextId ? parseInt(savedNextId) : 2;
+    } catch (error) {
+      console.error("Ошибка при чтении nextId из localStorage:", error);
+      return 2;
+    }
+  });
+
+  const navigate = useNavigate();
+
+  // Сохранение данных в localStorage при изменении
+  useEffect(() => {
+    try {
+      localStorage.setItem("expenses", JSON.stringify(expenses));
+      localStorage.setItem("nextId", nextId.toString());
+    } catch (error) {
+      console.error("Ошибка при сохранении в localStorage:", error);
+    }
+  }, [expenses, nextId]);
 
   const selectCategory = (categoryName) => {
     setSelectedCategory(categoryName);
@@ -65,8 +112,15 @@ function App() {
     e.preventDefault();
     if (!checkFormValidity()) return;
 
-    const formattedAmount = `${parseFloat(newExpense.amount).toLocaleString("ru-RU")} ₽`;
-    const formattedDate = new Date(newExpense.date).toLocaleDateString("ru-RU");
+    const amountValue = parseFloat(newExpense.amount);
+    const formattedAmount = isNaN(amountValue)
+      ? "0 ₽"
+      : `${amountValue.toLocaleString("ru-RU")} ₽`;
+
+    const dateObj = new Date(newExpense.date);
+    const formattedDate = isNaN(dateObj.getTime())
+      ? new Date().toLocaleDateString("ru-RU")
+      : dateObj.toLocaleDateString("ru-RU");
 
     const expenseToAdd = {
       id: nextId,
@@ -110,17 +164,12 @@ function App() {
       <header className="header">
         <img className="header-img" src="img/Vector (18).svg" alt="" />
         <div className="header-box">
-          <a className="header-box-link" href="/index.html" aria-current="page">
+          <Link className="header-box-link" to="/" aria-current="page">
             Мои расходы
-          </a>
-          <a
-            className="header-box-link"
-            href="/analysis.html"
-            onClick={handleNavigation}
-            aria-current="page"
-          >
+          </Link>
+          <Link className="header-box-link" to="/analysis" aria-current="page">
             Анализ расходов
-          </a>
+          </Link>
         </div>
         <button className="button-header">Выйти</button>
       </header>
@@ -202,7 +251,9 @@ function App() {
                 <div className="expenses-new-category" key={category}>
                   <b></b>
                   <p
-                    className={`expenses-new-category-text ${selectedCategory === category ? "selected" : ""}`}
+                    className={`expenses-new-category-text ${
+                      selectedCategory === category ? "selected" : ""
+                    }`}
                     onClick={() => selectCategory(category)}
                   >
                     {category}
@@ -228,6 +279,7 @@ function App() {
               placeholder="Введите сумму"
               type="number"
               min="1"
+              step="0.01"
               value={newExpense.amount}
               onChange={handleInputChange}
               onBlur={(e) => validateInput(e.target)}
@@ -244,6 +296,27 @@ function App() {
         </div>
       </div>
     </>
+  );
+}
+
+// Главный компонент приложения с роутингом
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Основной маршрут */}
+        <Route path="/" element={<ExpensesPage />} />
+
+        {/* Маршрут для анализа */}
+        <Route path="/analysis" element={<Analysis />} />
+
+        {/* Редирект для старых ссылок */}
+        <Route path="/index.html" element={<Navigate to="/" replace />} />
+
+        {/* Запасной маршрут (404) */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 
