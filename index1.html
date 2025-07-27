@@ -15,39 +15,7 @@
   <body>
    
     <script>
-      function selectCategory(element) {
-        // Удаляем класс selected у всех категорий
-        document
-          .querySelectorAll(".expenses-new-category-text")
-          .forEach((category) => {
-            category.classList.remove("selected");
-          });
-
-        // Добавляем класс selected к выбранной категории
-        element.classList.add("selected");
-      }
-
-      function validateInput(input) {
-        // Для всех полей - проверка на заполненность
-        if (input.value.trim() !== "") {
-          // Дополнительные проверки для специфичных типов
-          if (input.type === "number" && parseFloat(input.value) <= 0) {
-            input.classList.remove("valid");
-            return;
-          }
-
-          input.classList.add("valid");
-        } else {
-          input.classList.remove("valid");
-        }
-      }
-
-      // Валидация при потере фокуса
-      document.querySelectorAll(".expenses-new-input").forEach((input) => {
-        input.addEventListener("blur", function () {
-          validateInput(this);
-        });
-      });
+    
     </script>
   </body>
 </html>
